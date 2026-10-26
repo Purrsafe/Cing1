@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { WhiteLilyMotif } from '../WhiteLilyMotif';
 import { MapPin, Navigation, Copy, Check, Car, Bike, ExternalLink, Compass } from 'lucide-react';
+import domeWatermarkImg from '../../assets/image_5cc2c043.png';
 
 interface MapAndSeatingPageProps {
   onNext: () => void;
@@ -47,7 +48,7 @@ export const MapAndSeatingPage: React.FC<MapAndSeatingPageProps> = ({ onNext }) 
       {/* Architectural Watermark in Background */}
       <div className="absolute left-6 bottom-4 pointer-events-none opacity-[0.05] w-80 h-80">
         <img
-          src="/assets/aistudio/image_5cc2c043.png"
+          src={domeWatermarkImg}
           alt=""
           className="w-full h-full object-contain filter grayscale"
         />

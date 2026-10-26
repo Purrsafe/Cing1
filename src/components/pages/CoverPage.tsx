@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { WhiteLilyMotif } from '../WhiteLilyMotif';
 import { ChevronDown, MapPin, Calendar } from 'lucide-react';
+import coverSketchImg from '../../assets/schetch_clean_perfect.jpg';
 
 interface CoverPageProps {
   onNext: () => void;
@@ -21,7 +22,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({
       {/* Full Bleed Architectural Sketch Cover Background (Cleaned without Đồng Khởi) */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <img
-          src="/assets/aistudio/schetch_clean_perfect.jpg"
+          src={coverSketchImg}
           alt="Khách sạn Grand Saigon 1930"
           className="w-full h-full object-cover object-bottom sm:object-center filter contrast-[1.12] brightness-[1.01] sketch-embossed opacity-55 sm:opacity-60 transition-transform duration-1000 scale-102"
         />

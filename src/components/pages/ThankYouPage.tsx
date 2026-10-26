@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { WhiteLilyMotif } from '../WhiteLilyMotif';
 import { RSVPRecord } from '../../types';
 import { Heart, MessageCircle, Mail, RotateCcw, Copy, Check, Sparkles } from 'lucide-react';
+import domeWatermarkImg from '../../assets/image_5cc2c043.png';
 
 const NOTIFICATION_EMAIL = 'dmcuong.contact@gmail.com';
 
@@ -64,7 +65,7 @@ export const ThankYouPage: React.FC<ThankYouPageProps> = ({
       {/* Background Architectural Dome Watermark */}
       <div className="absolute left-1/2 -translate-x-1/2 top-12 pointer-events-none opacity-[0.05] w-80 h-80">
         <img
-          src="/assets/aistudio/image_5cc2c043.png"
+          src={domeWatermarkImg}
           alt=""
           className="w-full h-full object-contain filter grayscale"
         />

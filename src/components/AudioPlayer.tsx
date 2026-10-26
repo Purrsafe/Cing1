@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import weddingAudioUrl from '../assets/Procession_de_Mariage_e10493be.mp3';
 
-const AUDIO_SRC = '/assets/aistudio/Procession_de_Mariage_e10493be.mp3';
+const AUDIO_SRC = weddingAudioUrl;
 const MASTER_VOLUME = 0.50; // 50% volume as requested
 
 export const AudioPlayer: React.FC = () => {

@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { WhiteLilyMotif } from '../WhiteLilyMotif';
 import { RSVPFormData, RSVPRecord } from '../../types';
 import { Send, Heart, ShieldAlert } from 'lucide-react';
+import domeWatermarkImg from '../../assets/image_5cc2c043.png';
 
 const NOTIFICATION_EMAIL = 'dmcuong.contact@gmail.com';
 
@@ -89,7 +90,7 @@ export const RSVPPage: React.FC<RSVPPageProps> = ({ onRSVPSubmitted, onNext }) =
       {/* Background Architectural Dome Watermark */}
       <div className="absolute left-1/2 -translate-x-1/2 top-10 pointer-events-none opacity-[0.05] w-96 h-96">
         <img
-          src="/assets/aistudio/image_5cc2c043.png"
+          src={domeWatermarkImg}
           alt=""
           className="w-full h-full object-contain filter grayscale"
         />

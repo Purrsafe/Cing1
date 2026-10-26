@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { WhiteLilyMotif } from '../WhiteLilyMotif';
 import { GlassWater, Heart, Music, Sparkles, Calendar as CalendarIcon, Download, Check } from 'lucide-react';
+import domeWatermarkImg from '../../assets/image_5cc2c043.png';
 
 interface BanquetInfoPageProps {
   onNext: () => void;
@@ -113,7 +114,7 @@ export const BanquetInfoPage: React.FC<BanquetInfoPageProps> = ({ onNext }) => {
       {/* Background Architectural Dome Watermark */}
       <div className="absolute left-1/2 -translate-x-1/2 top-8 pointer-events-none opacity-[0.05] w-80 h-80">
         <img
-          src="/assets/aistudio/image_5cc2c043.png"
+          src={domeWatermarkImg}
           alt=""
           className="w-full h-full object-contain filter grayscale"
         />
