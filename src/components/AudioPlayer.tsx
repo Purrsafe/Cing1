@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 
 const AUDIO_SRC = '/assets/aistudio/Procession_de_Mariage_e10493be.mp3';
@@ -8,77 +8,103 @@ export const AudioPlayer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    // Create and configure audio element
-    const audio = new Audio(AUDIO_SRC);
-    audio.loop = true;
+  const startMusic = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.muted = false;
     audio.volume = MASTER_VOLUME;
-    audioRef.current = audio;
-
-    const playAudio = () => {
-      audio
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch(() => {
-          // Autoplay blocked by browser policy until gesture
-          setIsPlaying(false);
-        });
-    };
-
-    // Attempt autoplay immediately
-    playAudio();
-
-    // In case browser blocks until user interaction, start on first touch/click
-    const handleFirstGesture = () => {
-      if (audio.paused) {
-        audio
-          .play()
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(() => {});
-      }
-      ['click', 'touchstart', 'touchend', 'scroll'].forEach(evt => {
-        window.removeEventListener(evt, handleFirstGesture);
-      });
-    };
-
-    ['click', 'touchstart', 'touchend', 'scroll'].forEach(evt => {
-      window.addEventListener(evt, handleFirstGesture, { passive: true, once: true });
-    });
-
-    return () => {
-      ['click', 'touchstart', 'touchend', 'scroll'].forEach(evt => {
-        window.removeEventListener(evt, handleFirstGesture);
-      });
-      audio.pause();
-      audioRef.current = null;
-    };
-  }, []);
-
-  const toggleMusic = () => {
-    if (!audioRef.current) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.volume = MASTER_VOLUME;
-      audioRef.current
-        .play()
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise
         .then(() => {
           setIsPlaying(true);
         })
         .catch(err => {
-          console.warn('Audio play error:', err);
+          console.warn('Playback blocked until gesture:', err);
         });
+    }
+  }, []);
+
+  const stopMusic = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.pause();
+    setIsPlaying(false);
+  }, []);
+
+  const toggleMusic = () => {
+    if (isPlaying) {
+      stopMusic();
+    } else {
+      startMusic();
     }
   };
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.volume = MASTER_VOLUME;
+
+    // 1. Attempt immediate unmuted autoplay
+    const attemptUnmuted = audio.play();
+    if (attemptUnmuted !== undefined) {
+      attemptUnmuted
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          // 2. If unmuted autoplay blocked by browser policy:
+          // Start playing muted so audio buffer is primed and running
+          audio.muted = true;
+          audio
+            .play()
+            .then(() => {
+              // Muted playback started successfully; will unmute on first gesture
+            })
+            .catch(() => {});
+        });
+    }
+
+    // 3. Capture ANY user interaction on the entire document (touch, tap, click, swipe)
+    const handleGesture = () => {
+      startMusic();
+      removeListeners();
+    };
+
+    const removeListeners = () => {
+      ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown', 'wheel'].forEach(evt => {
+        document.removeEventListener(evt, handleGesture, true);
+      });
+      window.removeEventListener('start-wedding-audio', handleGesture);
+    };
+
+    ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown', 'wheel'].forEach(evt => {
+      document.addEventListener(evt, handleGesture, { capture: true });
+    });
+    window.addEventListener('start-wedding-audio', handleGesture);
+
+    return () => {
+      removeListeners();
+    };
+  }, [startMusic]);
+
   return (
     <div className="fixed top-2.5 right-2.5 sm:top-4 sm:right-4 z-50 flex items-center gap-2">
+      {/* Hidden persistent native audio element in DOM with autoPlay and playsInline */}
+      <audio
+        ref={audioRef}
+        id="wedding-bgm"
+        src={AUDIO_SRC}
+        autoPlay
+        loop
+        playsInline
+        preload="auto"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
+
       <button
         onClick={toggleMusic}
         title={isPlaying ? 'Tắt âm nhạc' : 'Bật nhạc lễ cưới: Procession de Mariage (50%)'}

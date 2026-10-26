@@ -68,6 +68,9 @@ export const PageFlipContainer: React.FC<PageFlipContainerProps> = ({
 
   const goToPage = useCallback(
     (newIndex: number) => {
+      try {
+        window.dispatchEvent(new Event('start-wedding-audio'));
+      } catch {}
       if (newIndex < 0 || newIndex >= totalPages || newIndex === currentPage || isFlipping) {
         return;
       }
@@ -138,6 +141,9 @@ export const PageFlipContainer: React.FC<PageFlipContainerProps> = ({
 
   // Touch Swipe for Mobile (Up/Down)
   const handleTouchStart = (e: React.TouchEvent) => {
+    try {
+      window.dispatchEvent(new Event('start-wedding-audio'));
+    } catch {}
     touchStartY.current = e.touches[0].clientY;
     touchStartX.current = e.touches[0].clientX;
   };

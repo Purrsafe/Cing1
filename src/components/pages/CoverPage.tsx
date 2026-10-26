@@ -128,7 +128,12 @@ export const CoverPage: React.FC<CoverPageProps> = ({
 
         {/* Interactive Flip Up Prompt */}
         <button
-          onClick={onNext}
+          onClick={() => {
+            try {
+              window.dispatchEvent(new Event('start-wedding-audio'));
+            } catch {}
+            onNext();
+          }}
           className="group flex flex-col items-center gap-1 text-[#382618] hover:text-black active:scale-95 transition-all focus:outline-none py-1"
         >
           <span className="text-xs sm:text-sm uppercase tracking-[0.24em] font-display font-bold text-embossed">
