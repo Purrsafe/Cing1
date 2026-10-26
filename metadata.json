@@ -1,0 +1,6 @@
+{
+  "name": "Thiệp Cưới Hoàng Gia - Grand Saigon",
+  "description": "Thiệp mời cưới trực tuyến phong cách cổ điển sang trọng tại Khách sạn Grand Saigon, hiệu ứng lật trang 3D từ dưới lên, hoa Lily trắng và xác nhận tham dự qua Email và Zalo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
